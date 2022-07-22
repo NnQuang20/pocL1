@@ -1,0 +1,24 @@
+api:
+  name : student-app-api
+  count: 1
+  image: nnquang12/student-app-api:0.0.1-SNAPSHOT
+  port: 8080
+  targetPort: 8080
+
+client:
+  name: student-app-client
+  count: 1
+  image: nnquang12/student-app-client
+  port: 80
+  targetPort: 80
+
+VolumeClaim: 
+  name: mongo-pvc
+  storage: 256Mi
+  
+mongo:
+  name: mongo
+  count: 1
+  image: mongo:3.6.17-xenial
+  port: 27017
+  targetPort: 27017
