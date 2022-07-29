@@ -13,7 +13,7 @@ function App() {
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <a href="/students" className="navbar-brand">
-            Vietnam_QuangNguyen
+            Vietnam_QuangNguyen12
           </a>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
