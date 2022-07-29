@@ -30,7 +30,7 @@ pipeline{
         stage("push-images"){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'nnquang12', variable: 'nnquang12')]) {
+                    withCredentials([string(credentialsId: 'nnquang', variable: 'nnquang12')]) {
                     sh 'docker login -u nnquang12 -p ${nnquang12}'
                     }
                     sh 'docker push nnquang12/student-app-api:0.0.1-SNAPSHOT'
