@@ -41,6 +41,8 @@ pipeline{
 	stage("add repo"){
             steps{
                 sh 'helm repo add istio https://istio-release.storage.googleapis.com/charts'
+		sh 'helm repo add grafana https://grafana.github.io/helm-charts'
+		sh 'helm repo add bitnami https://charts.bitnami.com/bitnami'
                 sh 'helm repo ls'
                 sh 'helm repo update'
             }
@@ -64,14 +66,14 @@ pipeline{
         }
         stage("prometheus & grafana"){
             steps{
-                sh 'helm upgrade prometheus prometheus --install'
+		sh 'helm install prometheus prometheus-community/prometheus'
                 sh 'kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-np'
-                sh 'minikube service prometheus-server-np'
-                sh 'helm upgrade grafana grafana --install'
+                //sh 'minikube service prometheus-server-np'
+                sh 'helm install grafana bitnami/grafana'
                 sh 'kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-np'
                 //echo "User: admin"
                 //echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d)"
-                sh 'minikube service grafana-np'
+                //sh 'minikube service grafana-np'
             }
         }
     }
