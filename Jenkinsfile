@@ -22,7 +22,7 @@ pipeline{
         stage("build-client"){
             steps{
                 dir ("react-student-management-web-app"){
-                    sh "docker build -t nnquang12/student-app-client:1.1.0 ."
+                    sh "docker build -t nnquang12/student-app-client:1.1.1 ."
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline{
                     sh 'docker login -u nnquang12 -p ${nnquang12}'
                     }
                     sh 'docker push nnquang12/student-app-api:0.0.1-SNAPSHOT'
-                    sh 'docker push nnquang12/student-app-client:1.1.0'
+                    sh 'docker push nnquang12/student-app-client:1.1.1'
                 }
             }
         }
