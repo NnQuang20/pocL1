@@ -41,7 +41,7 @@ pipeline{
 	stage("add repo"){
             steps{
                 sh 'helm repo add istio https://istio-release.storage.googleapis.com/charts'
-		sh 'helm repo add grafana https://grafana.github.io/helm-charts'
+		sh 'helm repo add prometheus-community https://prometheus-community.github.io/helm-charts'
 		sh 'helm repo add bitnami https://charts.bitnami.com/bitnami'
                 sh 'helm repo ls'
                 sh 'helm repo update'
