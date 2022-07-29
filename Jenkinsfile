@@ -38,9 +38,40 @@ pipeline{
                 }
             }
         }
-        stage("deploy"){
+	stage("add repo"){
+            steps{
+                sh 'helm repo add istio https://istio-release.storage.googleapis.com/charts'
+                sh 'helm repo ls'
+                sh 'helm repo update'
+            }
+        }
+        stage("install istio"){
+            steps{
+                dir ("gateway"){
+                    //sh 'kubectl create namespace istio-system'
+                    sh 'kubectl label namespace default istio-injection=enabled --overwrite'
+                    sh 'helm upgrade istio-base istio/base -n istio-system --install'
+                    sh 'helm upgrade istiod istio/istiod -n istio-system --wait --install'
+                    sh 'helm upgrade istio-ingress istio/gateway -f nnq.yaml -n istio-system --wait --install'
+                    sh 'kubectl apply -f istio-ingressgateway.yaml'
+                }  
+            }
+        }
+	stage("deploy"){
             steps{
                 sh 'helm upgrade nnq helm/ --install'
+            }
+        }
+        stage("prometheus & grafana"){
+            steps{
+                sh 'helm upgrade prometheus prometheus --install'
+                //sh 'kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-np'
+                //sh 'minikube service prometheus-server-np'
+                sh 'helm upgrade grafana grafana --install'
+                //sh 'kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-np'
+                //echo "User: admin"
+                //echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d)"
+                //sh 'minikube service grafana-np'
             }
         }
     }
